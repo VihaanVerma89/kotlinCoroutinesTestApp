@@ -4,10 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -19,6 +17,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import com.example.kotlincoroutinstestapp.ui.theme.KotlinCoroutinsTestAppTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -26,6 +28,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val scope = CoroutineScope(Job() + Dispatchers.IO)
+        scope.launch {
+
+        }
         setContent {
             KotlinCoroutinsTestAppTheme {
                 // A surface container using the 'background' color from the theme
@@ -42,13 +48,78 @@ fun MainScreen(
     mainViewModel: MainViewModel,
 ) {
 
+    LazyColumn(modifier = Modifier.fillMaxHeight()) {
+        item {
+            ButtonView(text = "Get Data in default launch") {
+                mainViewModel.getData()
+            }
+        }
+        item {
+            ButtonView(text = "Get Data in Dispatcher.IO launch") {
+                mainViewModel.getDataInDispatcherLaunch()
+            }
+        }
+        item {
+            ButtonView(text = "Send n Receive Test") {
+                mainViewModel.channelSendReceiveTest()
+            }
+        }
+        item {
+            ButtonView(text = "Flow Test") {
+                mainViewModel.flowTest()
+            }
+        }
+        item {
+            ButtonView(text = "Flows are cold") {
+                mainViewModel.flowsAreCold()
+            }
+        }
+
+        item {
+            ButtonView(text = "Flows Cancellation") {
+                mainViewModel.flowCancellation()
+            }
+        }
+        item {
+            ButtonView(text = "Flows Map Operator") {
+                mainViewModel.flowMapOperator()
+            }
+        }
+
+        item {
+            ButtonView(text = "Flows Transform Operator") {
+                mainViewModel.flowTransformOperator()
+            }
+        }
+
+        item {
+            ButtonView(text = "Flows Size Limiting Operator") {
+                mainViewModel.flowSizeLimitingOperator()
+            }
+        }
+
+        item {
+            ButtonView(text = "Flows Terminal Operator") {
+                mainViewModel.flowTerminalOperator()
+            }
+        }
+
+        item {
+            ButtonView(text = "Flows are sequential") {
+                mainViewModel.flowsAreSequential()
+            }
+        }
+    }
+}
+
+@Composable
+fun ChannelsScreen(
+    mainViewModel: MainViewModel,
+) {
     Column() {
-        ButtonView(text = "Get Data in default launch") {
-            mainViewModel.getData()
-        }
-        ButtonView(text = "Get Data in Dispatcher.IO launch") {
-            mainViewModel.getDataInDispatcherLaunch()
-        }
+//        ButtonView(text = "Get Data in Dispatcher.IO launch") {
+//            mainViewModel.getDataInDispatcherLaunch()
+//        }
     }
 }
 
