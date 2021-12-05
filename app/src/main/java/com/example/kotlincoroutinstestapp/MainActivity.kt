@@ -11,11 +11,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import com.example.kotlincoroutinstestapp.ui.theme.KotlinCoroutinsTestAppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,8 +34,70 @@ class MainActivity : ComponentActivity() {
             KotlinCoroutinsTestAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    MainScreen(viewModel)
+//                    MainScreen(viewModel)
+//                    cancellationAndTimeOutsScreen(viewModel)
+                    composingSuspendingFunctions(viewModel)
                 }
+            }
+        }
+    }
+}
+
+//https://kotlinlang.org/docs/cancellation-and-timeouts.html
+@Composable
+fun cancellationAndTimeOutsScreen(viewModel: MainViewModel) {
+
+    LazyColumn(modifier = Modifier.fillMaxHeight()) {
+
+        item {
+            ButtonView(text = "Cancel coroutine execution") {
+                viewModel.cancelCoroutineExecution()
+            }
+        }
+
+        item {
+            ButtonView(text = "Cancel is cooperative") {
+                viewModel.cancellationIsCooperative()
+            }
+        }
+
+        item {
+            ButtonView(text = "Making computation code cancellable") {
+                viewModel.makingComputationCodeCancellable()
+            }
+        }
+
+        item {
+            ButtonView(text = "Closing resources with finally") {
+                viewModel.closingResourcesWithFinally()
+            }
+        }
+
+        item {
+            ButtonView(text = "Run non-cancellable block with exception") {
+                viewModel.runNonCancellableBlockSilentException()
+            }
+        }
+
+        item {
+            ButtonView(text = "Run non-cancellable block") {
+                viewModel.runNonCancellableBlock()
+            }
+        }
+
+
+    }
+}
+
+//https://kotlinlang.org/docs/composing-suspending-functions.html
+@Composable
+fun composingSuspendingFunctions(viewModel: MainViewModel) {
+
+    LazyColumn(modifier = Modifier.fillMaxHeight()) {
+
+        item {
+            ButtonView(text = "Cancel coroutine execution") {
+                viewModel.sequentialByDefault()
             }
         }
     }
@@ -109,6 +169,55 @@ fun MainScreen(
                 mainViewModel.flowsAreSequential()
             }
         }
+
+        item {
+            ButtonView(text = "FlowOn operator") {
+                mainViewModel.flowOnOperator()
+            }
+        }
+
+        item {
+            ButtonView(text = "Flow Without Buffer operator") {
+                mainViewModel.flowWithoutBufferOperator()
+            }
+        }
+
+        item {
+            ButtonView(text = "Flow Buffer operator") {
+                mainViewModel.flowBufferOperator()
+            }
+        }
+
+        item {
+            ButtonView(text = "Flow Conflate operator") {
+                mainViewModel.flowConflateOperator()
+            }
+        }
+
+        item {
+            ButtonView(text = "Flow collect latest operator") {
+                mainViewModel.flowCollectLatest()
+            }
+        }
+
+        item {
+            ButtonView(text = "Flow zip operator") {
+                mainViewModel.flowZipOperator()
+            }
+        }
+
+        item {
+            ButtonView(text = "Flow Exception") {
+                mainViewModel.flowException()
+            }
+        }
+
+        item {
+            ButtonView(text = "Flow Exception Catching Declaratively") {
+                mainViewModel.flowExceptionDeclaratively()
+            }
+        }
+
     }
 }
 
